@@ -509,13 +509,11 @@
                 
                   <h1>Contribute/Retrieve Data</h1>
                 
-                <div class="admonition bug">
-<p><strong>Visit the <a href="https://portal.mpcontribs.org/#apply">apply</a> and
+                <p><strong>Visit the <a href="https://portal.mpcontribs.org/#apply">apply</a> and
 <a href="https://portal.mpcontribs.org/#work">work</a> pages on the portal to apply for a project and
 get started with the MPContribs API.</strong> The work page provides notebooks with example code
 that can be downloaded to execute on your own machine or launched in the browser on remote
 compute resources (e.g. <a href="https://jupyter.nersc.gov">https://jupyter.nersc.gov</a>).</p>
-</div>
 <p>The <a href="https://api.mpcontribs.org">MPContribs API</a> provides programmatic access to
 experimental and theoretical data contributed by the MP community. Project information is
 retrievable through the <a href="#projects"><code>projects</code></a> resource, and the corresponding
@@ -536,7 +534,7 @@ Docs</a> for more details and to try out the API in the browser.</p>
 </thead>
 <tbody>
 <tr>
-<td>project</td>
+<td>name</td>
 <td>short URL-compatible name</td>
 </tr>
 <tr>
@@ -548,6 +546,10 @@ Docs</a> for more details and to try out the API in the browser.</p>
 <td>short title to fit on contribution cards</td>
 </tr>
 <tr>
+<td>long_title</td>
+<td>long title to show on dataset/project landing page</td>
+</tr>
+<tr>
 <td>authors</td>
 <td>comma-separated list of authors</td>
 </tr>
@@ -556,8 +558,8 @@ Docs</a> for more details and to try out the API in the browser.</p>
 <td>paragraph to describe project/dataset</td>
 </tr>
 <tr>
-<td>urls</td>
-<td>list of references in form of URLs</td>
+<td>references</td>
+<td>list of references in form of dictionaries with <code>label</code> and <code>url</code> fields</td>
 </tr>
 <tr>
 <td>other</td>
@@ -571,8 +573,17 @@ Docs</a> for more details and to try out the API in the browser.</p>
 <td>is_approved</td>
 <td>whether the project has been approved by an admin</td>
 </tr>
+<tr>
+<td>unique_identifiers</td>
+<td>whether identifiers in contributions are unique</td>
+</tr>
 </tbody>
 </table>
+<ul>
+<li>the <code>name</code> field will also be used in the unique URL to the landing page, i.e.
+  <code>https://portal.mpcontribs.org/&lt;name&gt;</code></li>
+<li>If you need to unset/delete a field from <code>other</code>, set it to None</li>
+</ul>
 <h3 id="contributions">Contributions<a class="headerlink" href="#contributions" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -604,6 +615,21 @@ Docs</a> for more details and to try out the API in the browser.</p>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>The preferred <code>data</code> format is to provide numerical data as strings with units rather than
+  naked numerical values. This will be parsed by the API to yield a value and a unit for display.
+  This promotes the correct reporting of significant figures as well.</li>
+<li>The data structure that is retrieved by users querying MPContribs will not be identical to
+  the one you upload: the API parses things (like string/unit values) and returns the resulting
+  data structure</li>
+<li>underscores, spaces, or other punctuation aren’t allowed in <code>data</code> field names</li>
+<li>the <code>id</code> attribute of a contribution is set automatically</li>
+<li>the <code>identifier</code> attribute is user-specified. If project level <code>unique_identifiers</code> is <code>False</code>,
+  duplicate identifiers will cause submission failure</li>
+<li>lists aren’t allowed in contributions</li>
+<li><code>data</code> cannot contain more than 4 levels of nesting</li>
+<li><code>NaN</code> values converted from pandas dataframes cause submission to fail</li>
+</ul>
 <h3 id="tables">Tables<a class="headerlink" href="#tables" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
