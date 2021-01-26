@@ -1,0 +1,35 @@
+on:
+  push:
+jobs:
+  test-timeout:
+    name: pip install ${{ matrix.client-package }} (${{ matrix.os }}/py${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+        python-version:
+          - '3.7'
+          - '3.8'
+        client-package:
+          - ./mpcontribs-client/
+          - mpcontribs-client==3.7.6
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install mpcontribs-client
+        shell: bash
+        run: |
+          python -m pip --progress-bar=off install ${{ matrix.client-package }}
+      - name: Run minimal example
+        shell: bash
+        run: |
+          python -c '
+          from mpcontribs.client import Client
+          c = Client(apikey=${{ secrets.MPCONTRIBS_API_KEY }})
+          print(c)
+          '
