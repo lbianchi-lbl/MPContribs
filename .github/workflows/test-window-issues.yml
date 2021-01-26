@@ -16,10 +16,8 @@ jobs:
           - '3.7'
           - '3.8'
         client-package:
-          - ./mpcontribs-client/
           - mpcontribs-client==3.7.6
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
