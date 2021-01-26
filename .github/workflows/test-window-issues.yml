@@ -1,5 +1,7 @@
 on:
   push:
+  workflow_dispatch:
+
 jobs:
   test-timeout:
     name: pip install ${{ matrix.client-package }} (${{ matrix.os }}/py${{ matrix.python-version }})
