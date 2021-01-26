@@ -20,6 +20,7 @@ jobs:
           - '3.9'
         client-package:
           - mpcontribs-client==3.7.6
+          - mpcontribs-client==3.7.7
     steps:
       - uses: actions/setup-python@v2
         with:
