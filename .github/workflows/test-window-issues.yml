@@ -26,7 +26,7 @@ jobs:
       - name: Install mpcontribs-client
         shell: bash
         run: |
-          python -m pip --progress-bar=off install ${{ matrix.client-package }}
+          python -m pip install --progress-bar=off ${{ matrix.client-package }}
       - name: Run minimal example
         shell: bash
         run: |
