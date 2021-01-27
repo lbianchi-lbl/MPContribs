@@ -4,7 +4,7 @@ on:
 
 jobs:
   test-timeout:
-    name: ${{ matrix.package-version }} (${{ matrix.os }}/py${{ matrix.python-version }}/${{ matrix.dependencies }})
+    name: ${{ matrix.package-version }} (${{ matrix.os }}/py${{ matrix.python-version }}/${{ matrix.dependencies }}/sslfix=${{ matrix.use-ssl-fix }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -22,7 +22,10 @@ jobs:
           - '3.7.7'
         dependencies:
           - ''
-          - -r mpcontribs-client/requirements.txt certifi
+          - -r mpcontribs-client/requirements.txt
+        use-ssl-fix:
+          - ''
+          - 'true'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -53,12 +56,15 @@ jobs:
         shell: bash
         env:
           MPCONTRIBS_API_KEY: ${{ secrets.MPCONTRIBS_API_KEY }}
+          USE_SSL_FIX:  ${{ matrix.use-ssl-fix }}
         run: |
           python -c '
           import os
           import sys
+
+          USE_SSL_FIX = bool(os.environ.get("USE_SSL_FIX", ""))
           
-          if sys.platform.startswith("win"):
+          if sys.platform.startswith("win") and USE_SSL_FIX:
               import certifi
               os.environ["SSL_CERT_FILE"] = certifi.where()
 
