@@ -12,4 +12,5 @@ pyOpenSSL==20.0.1
 ratelimit==2.2.1
 requests-futures==1.0.0
 service-identity==18.1.0
+Twisted==20.3.0
 tqdm==4.56.0
