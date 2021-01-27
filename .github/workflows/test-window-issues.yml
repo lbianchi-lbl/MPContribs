@@ -22,7 +22,7 @@ jobs:
           - '3.7.7'
         dependencies:
           - ''
-          - -r mpcontribs-client/requirements.txt
+          - -r mpcontribs-client/requirements.txt certifi
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -56,6 +56,12 @@ jobs:
         run: |
           python -c '
           import os
+          import sys
+          
+          if sys.platform.startswith('win'):
+              import certifi
+              os.environ["SSL_CERT_FILE"] = certifi.where()
+
           from mpcontribs.client import Client
 
           API_KEY = os.environ.get("MPCONTRIBS_API_KEY")
