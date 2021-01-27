@@ -23,6 +23,7 @@ jobs:
           - mpcontribs-client==3.7.7
           - -r mpcontribs-client/requirements.txt mpcontribs-client==3.7.7
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
