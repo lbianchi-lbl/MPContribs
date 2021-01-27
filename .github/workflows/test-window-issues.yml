@@ -4,7 +4,7 @@ on:
 
 jobs:
   test-timeout:
-    name: ${{ matrix.client-package }} (${{ matrix.os }}/py${{ matrix.python-version }}/${{ matrix.dependencies }})
+    name: ${{ matrix.package-version }} (${{ matrix.os }}/py${{ matrix.python-version }}/${{ matrix.dependencies }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -12,15 +12,14 @@ jobs:
         os:
           - windows-latest
           - ubuntu-latest
-          - macos-latest
         python-version:
           - '3.6'
           - '3.7'
           - '3.8'
           - '3.9'
-        client-package:
-          - mpcontribs-client==3.7.6
-          - mpcontribs-client==3.7.7
+        package-version:
+          - '3.7.6'
+          - '3.7.7'
         dependencies:
           - ''
           - -r mpcontribs-client/requirements.txt
@@ -41,7 +40,7 @@ jobs:
       - name: Install mpcontribs-client
         shell: bash
         run: |
-          python -m pip install --progress-bar=off ${{ matrix.client-package }}
+          python -m pip install --progress-bar=off mpcontribs-client==${{ matrix.package-version }}
       - name: Run minimal example
         shell: bash
         env:
