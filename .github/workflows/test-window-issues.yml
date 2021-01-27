@@ -58,7 +58,7 @@ jobs:
           import os
           import sys
           
-          if sys.platform.startswith('win'):
+          if sys.platform.startswith("win"):
               import certifi
               os.environ["SSL_CERT_FILE"] = certifi.where()
 
